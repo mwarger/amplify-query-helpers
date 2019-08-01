@@ -1,0 +1,37 @@
+type Blog @model {
+  id: ID!
+  name: String!
+  posts: [Post] @connection(name: "BlogPosts")
+}
+
+type Post
+  @model
+  @key(name: "ByBlog", fields: ["postBlogId"], queryField: "postsForBlog") {
+  id: ID!
+  title: String!
+  blog: Blog @connection(name: "BlogPosts")
+  postBlogId: ID!
+  comments: [Comment!] @connection(name: "PostComments") # if a comment exists, it shouldn't be null
+}
+type Comment
+  @model(subscriptions: null) # necessary to override the subscriptions without created a new field on Subscriptions
+  @key(
+    name: "ByPost"
+    fields: ["commentPostId"]
+    queryField: "commentsForPost"
+  ) {
+  id: ID!
+  content: String
+  post: Post @connection(name: "PostComments")
+  commentPostId: ID!
+}
+
+# override subscriptions to subscript to comments for a specific post
+type Subscription {
+  onCreateComment(commentPostId: ID): Comment
+    @aws_subscribe(mutations: ["createComment"])
+  onUpdateComment(commentPostId: ID): Comment
+    @aws_subscribe(mutations: ["updateComment"])
+  onDeleteComment(commentPostId: ID): Comment
+    @aws_subscribe(mutations: ["deleteComment"])
+}

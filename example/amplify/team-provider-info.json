@@ -1,0 +1,14 @@
+{
+    "example": {
+        "awscloudformation": {
+            "AuthRoleName": "ts-helper-example-example-20190729201140-authRole",
+            "UnauthRoleArn": "arn:aws:iam::939693218783:role/ts-helper-example-example-20190729201140-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::939693218783:role/ts-helper-example-example-20190729201140-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "ts-helper-example-example-20190729201140-deployment",
+            "UnauthRoleName": "ts-helper-example-example-20190729201140-unauthRole",
+            "StackName": "ts-helper-example-example-20190729201140",
+            "StackId": "arn:aws:cloudformation:us-east-1:939693218783:stack/ts-helper-example-example-20190729201140/feb7af90-b266-11e9-b1bd-12d607a4fd1c"
+        }
+    }
+}
