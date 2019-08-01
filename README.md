@@ -9,3 +9,4 @@ TODO
 - [ ] Tests
 - [ ] Update Readme
 - [ ] Make it Pretty
+- [ ] Publish
