@@ -9,11 +9,13 @@
   ],
   "scripts": {
     "start": "tsdx watch",
+    "dev": "cd example && yarn start",
     "build": "tsdx build",
     "test": "tsdx test --env=jsdom"
   },
   "peerDependencies": {
-    "aws-amplify": "^1.1.32",
+    "@aws-amplify/api": "^1.0.42",
+    "@aws-amplify/pubsub": "^1.1.0",
     "react": ">=16"
   },
   "husky": {
@@ -41,7 +43,9 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "aws-amplify": "^1.1.32",
+    "@aws-amplify/api": "^1.0.42",
+    "@aws-amplify/pubsub": "^1.1.0",
+    "aws-amplify": "^1.1.36",
     "use-deep-compare-effect": "^1.2.0",
     "zen-observable-ts": "^0.8.19"
   }

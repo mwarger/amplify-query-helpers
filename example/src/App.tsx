@@ -25,7 +25,6 @@ import {
   commentFragment,
   commentsForPostQuery,
   commentsForPostQueryVariables,
-  OnUpdateCommentSubscription,
   OnCreateCommentSubscriptionVariables,
   DeleteCommentMutation,
   DeleteCommentMutationVariables,
@@ -39,8 +38,8 @@ import {
   deleteComment,
   deletePost,
 } from './graphql/mutations';
-import API from '@aws-amplify/api';
-import config from './aws-exports';
+import Amplify from 'aws-amplify';
+
 import * as faker from 'faker';
 import { oc } from 'ts-optchain';
 import {
@@ -56,7 +55,8 @@ import {
 } from './graphql/subscriptions';
 import { Spinner } from './SpinnerExample';
 
-API.configure(config);
+import config from './aws-exports';
+Amplify.configure(config);
 
 export const App = () => {
   // useQuery example
@@ -70,7 +70,7 @@ export const App = () => {
       key: 'onCreatePost',
       query: onCreatePost,
     },
-    dispatch: payload => {
+    dispatch: () => {
       setShowNewPost(true);
     },
   });

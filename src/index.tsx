@@ -8,6 +8,7 @@ export type UndefinedGQLType<T> = T | null | undefined;
 export function notEmpty<TValue>(
   value: TValue | null | undefined
 ): value is TValue {
+  // console.warn('notEmpty is provided for convenience and demonstration, there are probably better alternatives.')
   return value !== null && value !== undefined;
 }
 
@@ -179,7 +180,7 @@ export const useQueryList = <
 
   useDeepCompareEffect(() => {
     setList([]);
-  }, [variables]);
+  }, [{ variables }]);
 
   React.useEffect(() => {
     const listData = data && data[listKey];
