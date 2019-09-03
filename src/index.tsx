@@ -82,7 +82,7 @@ export const QueryHandler = <DataType extends {}>({
   }
 
   if (error) {
-    console.log('error', JSON.stringify(error.errors));
+    // console.log('error', JSON.stringify(error.errors));
 
     return error.data ? (
       <>{children(error.data)}</>
@@ -115,7 +115,7 @@ export const useQuery = <ResultType extends {}, VariablesType extends {} = {}>(
       const data = await gqlOp<ResultType, VariablesType>(query, variables);
       setData(data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setError(error);
     } finally {
       setLoading(false);
