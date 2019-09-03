@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
 import { Observable } from 'zen-observable-ts';
-import useDeepCompareEffect from 'use-deep-compare-effect';
 
 export type UndefinedGQLType<T> = T | null | undefined;
 
@@ -126,9 +125,9 @@ export const useQuery = <ResultType extends {}, VariablesType extends {} = {}>(
     fetchQuery(query, variables);
   };
 
-  useDeepCompareEffect(() => {
+  React.useEffect(() => {
     fetchQuery(query, variables);
-  }, [{ query, variables }]);
+  }, [query, JSON.stringify(variables)]);
 
   return {
     loading,
@@ -178,9 +177,9 @@ export const useQueryList = <
     }
   );
 
-  useDeepCompareEffect(() => {
+  React.useEffect(() => {
     setList([]);
-  }, [{ variables }]);
+  }, [JSON.stringify(variables)]);
 
   React.useEffect(() => {
     const listData = data && data[listKey];
@@ -243,7 +242,7 @@ export const useSubscription = <
   }
   const [item, localDispatch] = React.useReducer(reducer, { itemData });
 
-  useDeepCompareEffect(() => {
+  React.useEffect(() => {
     if (config) {
       const { query, key, variables } = config;
       const subscription = API.graphql(graphqlOperation(query, variables));
@@ -275,7 +274,7 @@ export const useSubscription = <
       }
     }
     return undefined;
-  }, [{ config }]);
+  }, [JSON.stringify(config)]);
 
   return [item];
 };
