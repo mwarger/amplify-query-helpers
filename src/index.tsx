@@ -34,26 +34,6 @@ export const gqlOp = async <
 
 type TODO = any;
 
-export const QueryResult = <ResultType extends {}>({
-  render,
-  loading,
-  error,
-  data,
-}: {
-  loading: boolean;
-  error: TODO;
-  data: ResultType;
-  render: (data: ResultType) => React.ReactNode;
-}): React.ReactNode => {
-  return loading ? (
-    <div>Loading...</div>
-  ) : error ? (
-    <div>{error}</div>
-  ) : data ? (
-    render(data)
-  ) : null;
-};
-
 export interface UseQueryType<ResultType> {
   loading: boolean;
   error: TODO;
@@ -69,34 +49,30 @@ export const QueryHandler = <DataType extends {}>({
   refetch,
   overlay = false,
 }: {
-  overlay?: React.ReactNode;
+  overlay: React.ReactNode;
   data: DataType;
   refetch?: () => void;
   loading: boolean;
   error: { data: DataType; errors: any[] };
-  children: (data: DataType, refetch?: () => void) => React.ReactNode;
+  children: ({
+    data,
+    refetch,
+  }: {
+    data: DataType;
+    refetch?: () => void;
+  }) => React.ReactNode;
 }) => {
-  if (!overlay && loading) {
-    return <div>Loading...</div>;
-  }
-
   if (error) {
-    // console.log('error', JSON.stringify(error.errors));
-
-    return error.data ? (
-      <>{children(error.data)}</>
-    ) : (
-      <>{JSON.stringify(error.errors)}</>
-    );
+    console.log('error', JSON.stringify(error.errors));
   }
 
   return overlay ? (
     <>
       {loading && overlay}
-      {children(data, refetch)}
+      {children({ data, refetch })}
     </>
   ) : (
-    <>{children(data, refetch)}</>
+    <>{children({ data, refetch })}</>
   );
 };
 
