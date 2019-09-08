@@ -109,7 +109,7 @@ export const App = () => {
         {data => (
           <div>
             {oc(data)
-              .listBlogs.items([])
+              .data.listBlogs.items([])
               .filter(notEmpty)
               .map(blog => (
                 <Blog blog={blog} key={blog.id} refreshBlog={refreshBlog} />
@@ -152,7 +152,7 @@ const Blog: React.FC<{ blog: blogFragment; refreshBlog: () => void }> = ({
       <h1>{blog.name}</h1>
 
       <QueryHandler {...results}>
-        {posts => {
+        {({ data: posts }) => {
           return (
             <div>
               <button onClick={createRandomPost}>Create Random Post</button>
@@ -228,7 +228,7 @@ const CommentList: React.FC<{ postId }> = ({ postId }) => {
 
   return (
     <QueryHandler {...result}>
-      {commentList => (
+      {({ data: commentList }) => (
         <CommentSubscription commentList={commentList} postId={postId} />
       )}
     </QueryHandler>

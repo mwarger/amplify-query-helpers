@@ -6,6 +6,7 @@ This library is meant to help wrap some common Amplify GraphQL operations with t
 
 TODO
 
+- [ ] Assume more convention based on amplify query structure - connections, keys, get vs list, etc
 - [ ] Tests
 - [ ] Update Readme
 - [ ] Make it Pretty

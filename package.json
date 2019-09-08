@@ -9,9 +9,10 @@
   ],
   "scripts": {
     "start": "tsdx watch",
-    "dev": "cd example && yarn start",
+    "example": "cd example && yarn start",
     "build": "tsdx build",
-    "test": "tsdx test --env=jsdom"
+    "test": "tsdx test --env=jsdom",
+    "dev": "run-p start example"
   },
   "peerDependencies": {
     "aws-amplify": "^1.1.36",
@@ -33,6 +34,7 @@
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
     "husky": "^3.0.5",
+    "npm-run-all": "^4.1.5",
     "prettier": "^1.18.2",
     "pretty-quick": "^1.11.1",
     "react": "^16.9.0",

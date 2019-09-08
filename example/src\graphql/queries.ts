@@ -120,12 +120,14 @@ export const listComments = `query ListComments(
 `;
 export const postsForBlog = `query PostsForBlog(
   $postBlogId: ID
+  $sortDirection: ModelSortDirection
   $filter: ModelPostFilterInput
   $limit: Int
   $nextToken: String
 ) {
   postsForBlog(
     postBlogId: $postBlogId
+    sortDirection: $sortDirection
     filter: $filter
     limit: $limit
     nextToken: $nextToken
@@ -148,12 +150,14 @@ export const postsForBlog = `query PostsForBlog(
 `;
 export const commentsForPost = `query CommentsForPost(
   $commentPostId: ID
+  $sortDirection: ModelSortDirection
   $filter: ModelCommentFilterInput
   $limit: Int
   $nextToken: String
 ) {
   commentsForPost(
     commentPostId: $commentPostId
+    sortDirection: $sortDirection
     filter: $filter
     limit: $limit
     nextToken: $nextToken

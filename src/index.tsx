@@ -49,7 +49,7 @@ export const QueryHandler = <DataType extends {}>({
   refetch,
   overlay = false,
 }: {
-  overlay: React.ReactNode;
+  overlay?: React.ReactNode;
   data: DataType;
   refetch?: () => void;
   loading: boolean;
