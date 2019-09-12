@@ -183,10 +183,11 @@ export const useQueryList = <
 enum ActionType {
   'update',
   'create',
-  'remove',
+  'delete',
 }
 
 type Action<T> = { type: ActionType; payload: T };
+
 type ConfigType<VariableType extends {}> = {
   query: string;
   key: string;
@@ -278,7 +279,7 @@ export const useCrudSubscription = <
         return state.map(item => (item.id === payload.id ? payload : item));
       case ActionType.create:
         return [...state, payload];
-      case ActionType.remove:
+      case ActionType.delete:
         return [...state.filter(item => item.id !== payload.id)];
       default:
         throw new Error();
@@ -298,7 +299,7 @@ export const useCrudSubscription = <
 
   useSubscription<ListItemType, VariableType>({
     config: configs.deletedConfig,
-    dispatch: ({ payload }) => dispatch({ type: ActionType.remove, payload }),
+    dispatch: ({ payload }) => dispatch({ type: ActionType.delete, payload }),
   });
 
   return [list];
