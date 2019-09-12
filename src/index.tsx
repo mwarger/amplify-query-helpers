@@ -67,12 +67,14 @@ export const QueryHandler = <DataType extends {}>({
   }
 
   return overlay ? (
-    <>
+    <React.Fragment key={JSON.stringify(data)}>
       {loading && overlay}
       {children({ data, refetch })}
-    </>
+    </React.Fragment>
   ) : (
-    <>{children({ data, refetch })}</>
+    <React.Fragment key={JSON.stringify(data)}>
+      {children({ data, refetch })}
+    </React.Fragment>
   );
 };
 
