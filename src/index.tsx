@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
-import { Observable } from 'zen-observable-ts';
+import Observable from 'zen-observable';
 
 export type UndefinedGQLType<T> = T | null | undefined;
 
@@ -67,12 +67,14 @@ export const QueryHandler = <DataType extends {}>({
   }
 
   return overlay ? (
-    <>
+    <React.Fragment key={JSON.stringify(data)}>
       {loading && overlay}
       {children({ data, refetch })}
-    </>
+    </React.Fragment>
   ) : (
-    <>{children({ data, refetch })}</>
+    <React.Fragment key={JSON.stringify(data)}>
+      {children({ data, refetch })}
+    </React.Fragment>
   );
 };
 
@@ -199,27 +201,17 @@ export const useSubscription = <
   VariablesType extends {} = {}
 >({
   config,
-  dispatch,
   itemData,
+  dispatch,
 }: {
   config?: ConfigType<VariablesType>;
-  dispatch?: ({ payload }: { payload: ItemType }) => void;
   itemData?: ItemType;
+  dispatch?: ({ payload }: { payload: ItemType }) => void;
 } = {}) => {
-  function reducer(
-    state: { itemData: ItemType | undefined },
-    { type, payload }: Action<ItemType | undefined>
-  ) {
-    switch (type) {
-      case ActionType.update:
-        return { ...state, ...{ itemData: payload } };
-      default:
-        throw new Error();
-    }
-  }
-  const [item, localDispatch] = React.useReducer(reducer, { itemData });
+  const [item, update] = React.useState<ItemType | undefined>(itemData);
 
   React.useEffect(() => {
+    let unsubscribe;
     if (config) {
       const { query, key, variables } = config;
       const subscription = API.graphql(graphqlOperation(query, variables));
@@ -235,9 +227,7 @@ export const useSubscription = <
                 value: { data: { [key: string]: ItemType } };
               } = payload;
 
-              dispatch
-                ? dispatch({ payload: item })
-                : localDispatch({ type: ActionType.update, payload: item });
+              dispatch ? dispatch({ payload: item }) : update(item);
             } catch (error) {
               console.error(
                 `${error.message} - Check the key property: the current value is ${key}`
@@ -245,12 +235,12 @@ export const useSubscription = <
             }
           },
         });
-        return () => {
+        unsubscribe = () => {
           sub.unsubscribe();
         };
       }
     }
-    return undefined;
+    return unsubscribe;
   }, [JSON.stringify(config)]);
 
   return [item];

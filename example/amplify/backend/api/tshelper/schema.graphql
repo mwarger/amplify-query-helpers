@@ -1,6 +1,7 @@
 type Blog @model {
   id: ID!
   name: String!
+  publishDate: String
   posts: [Post] @connection(name: "BlogPosts")
 }
 
@@ -30,8 +31,11 @@ type Comment
 type Subscription {
   onCreateComment(commentPostId: ID): Comment
     @aws_subscribe(mutations: ["createComment"])
-  onUpdateComment(commentPostId: ID): Comment
+  onUpdateComment(id: ID, commentPostId: ID): Comment
     @aws_subscribe(mutations: ["updateComment"])
   onDeleteComment(commentPostId: ID): Comment
     @aws_subscribe(mutations: ["deleteComment"])
+
+  onCreatePostForBlog(postBlogId: ID): Post
+    @aws_subscribe(mutations: ["createPost"])
 }

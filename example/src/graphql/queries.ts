@@ -5,12 +5,8 @@ export const getBlog = `query GetBlog($id: ID!) {
   getBlog(id: $id) {
     id
     name
+    publishDate
     posts {
-      items {
-        id
-        title
-        postBlogId
-      }
       nextToken
     }
   }
@@ -25,9 +21,7 @@ export const listBlogs = `query ListBlogs(
     items {
       id
       name
-      posts {
-        nextToken
-      }
+      publishDate
     }
     nextToken
   }
@@ -40,17 +34,10 @@ export const getPost = `query GetPost($id: ID!) {
     blog {
       id
       name
-      posts {
-        nextToken
-      }
+      publishDate
     }
     postBlogId
     comments {
-      items {
-        id
-        content
-        commentPostId
-      }
       nextToken
     }
   }
@@ -65,14 +52,7 @@ export const listPosts = `query ListPosts(
     items {
       id
       title
-      blog {
-        id
-        name
-      }
       postBlogId
-      comments {
-        nextToken
-      }
     }
     nextToken
   }
@@ -85,14 +65,7 @@ export const getComment = `query GetComment($id: ID!) {
     post {
       id
       title
-      blog {
-        id
-        name
-      }
       postBlogId
-      comments {
-        nextToken
-      }
     }
     commentPostId
   }
@@ -107,11 +80,6 @@ export const listComments = `query ListComments(
     items {
       id
       content
-      post {
-        id
-        title
-        postBlogId
-      }
       commentPostId
     }
     nextToken
@@ -120,12 +88,14 @@ export const listComments = `query ListComments(
 `;
 export const postsForBlog = `query PostsForBlog(
   $postBlogId: ID
+  $sortDirection: ModelSortDirection
   $filter: ModelPostFilterInput
   $limit: Int
   $nextToken: String
 ) {
   postsForBlog(
     postBlogId: $postBlogId
+    sortDirection: $sortDirection
     filter: $filter
     limit: $limit
     nextToken: $nextToken
@@ -133,14 +103,7 @@ export const postsForBlog = `query PostsForBlog(
     items {
       id
       title
-      blog {
-        id
-        name
-      }
       postBlogId
-      comments {
-        nextToken
-      }
     }
     nextToken
   }
@@ -148,12 +111,14 @@ export const postsForBlog = `query PostsForBlog(
 `;
 export const commentsForPost = `query CommentsForPost(
   $commentPostId: ID
+  $sortDirection: ModelSortDirection
   $filter: ModelCommentFilterInput
   $limit: Int
   $nextToken: String
 ) {
   commentsForPost(
     commentPostId: $commentPostId
+    sortDirection: $sortDirection
     filter: $filter
     limit: $limit
     nextToken: $nextToken
@@ -161,11 +126,6 @@ export const commentsForPost = `query CommentsForPost(
     items {
       id
       content
-      post {
-        id
-        title
-        postBlogId
-      }
       commentPostId
     }
     nextToken
