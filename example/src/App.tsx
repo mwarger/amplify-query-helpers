@@ -6,7 +6,6 @@ import {
   mutation,
   notEmpty,
   useSubscription,
-  useSubscriptionByItself,
 } from '../../.';
 import {
   listBlogsQuery,
@@ -37,14 +36,14 @@ export const App = () => {
   const [showNewPost, setShowNewPost] = React.useState(false);
 
   // subscribe to event whenever post is created (global level)
-  const [item] = useSubscriptionByItself<postFragment>({
+  const [item] = useSubscription<postFragment>({
     config: {
       key: 'onCreatePost',
       query: onCreatePost,
     },
   });
 
-  const [firstBlogNewPost] = useSubscriptionByItself<
+  const [firstBlogNewPost] = useSubscription<
     postFragment,
     CreatePostMutationVariables
   >({
