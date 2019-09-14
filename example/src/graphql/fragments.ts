@@ -2,6 +2,7 @@ export const blogFragment = `
   fragment blog on Blog {
     id
     name
+    publishDate
   }
 `;
 
@@ -16,7 +17,7 @@ export const postFragment = `
 export const commentFragment = `
   fragment comment on Comment {
     id
-        content
-        commentPostId
+    content
+    commentPostId
   }
 `;

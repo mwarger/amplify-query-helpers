@@ -2,11 +2,12 @@ projects:
   tshelper:
     schemaPath: amplify/backend/api/tshelper/build/schema.graphql
     includes:
-      - src\graphql\**\*.ts
+      - src/graphql/**/*.ts
     excludes:
       - ./amplify/**
     extensions:
       amplify:
         codeGenTarget: typescript
-        generatedFileName: src\API.ts
-        docsFilePath: src\graphql
+        generatedFileName: src/API.ts
+        docsFilePath: src/graphql
+        maxDepth: 2

@@ -5,12 +5,8 @@ export const createBlog = `mutation CreateBlog($input: CreateBlogInput!) {
   createBlog(input: $input) {
     id
     name
+    publishDate
     posts {
-      items {
-        id
-        title
-        postBlogId
-      }
       nextToken
     }
   }
@@ -20,12 +16,8 @@ export const updateBlog = `mutation UpdateBlog($input: UpdateBlogInput!) {
   updateBlog(input: $input) {
     id
     name
+    publishDate
     posts {
-      items {
-        id
-        title
-        postBlogId
-      }
       nextToken
     }
   }
@@ -35,12 +27,8 @@ export const deleteBlog = `mutation DeleteBlog($input: DeleteBlogInput!) {
   deleteBlog(input: $input) {
     id
     name
+    publishDate
     posts {
-      items {
-        id
-        title
-        postBlogId
-      }
       nextToken
     }
   }
@@ -53,17 +41,10 @@ export const createPost = `mutation CreatePost($input: CreatePostInput!) {
     blog {
       id
       name
-      posts {
-        nextToken
-      }
+      publishDate
     }
     postBlogId
     comments {
-      items {
-        id
-        content
-        commentPostId
-      }
       nextToken
     }
   }
@@ -76,17 +57,10 @@ export const updatePost = `mutation UpdatePost($input: UpdatePostInput!) {
     blog {
       id
       name
-      posts {
-        nextToken
-      }
+      publishDate
     }
     postBlogId
     comments {
-      items {
-        id
-        content
-        commentPostId
-      }
       nextToken
     }
   }
@@ -99,17 +73,10 @@ export const deletePost = `mutation DeletePost($input: DeletePostInput!) {
     blog {
       id
       name
-      posts {
-        nextToken
-      }
+      publishDate
     }
     postBlogId
     comments {
-      items {
-        id
-        content
-        commentPostId
-      }
       nextToken
     }
   }
@@ -122,14 +89,7 @@ export const createComment = `mutation CreateComment($input: CreateCommentInput!
     post {
       id
       title
-      blog {
-        id
-        name
-      }
       postBlogId
-      comments {
-        nextToken
-      }
     }
     commentPostId
   }
@@ -142,14 +102,7 @@ export const updateComment = `mutation UpdateComment($input: UpdateCommentInput!
     post {
       id
       title
-      blog {
-        id
-        name
-      }
       postBlogId
-      comments {
-        nextToken
-      }
     }
     commentPostId
   }
@@ -162,14 +115,7 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
     post {
       id
       title
-      blog {
-        id
-        name
-      }
       postBlogId
-      comments {
-        nextToken
-      }
     }
     commentPostId
   }

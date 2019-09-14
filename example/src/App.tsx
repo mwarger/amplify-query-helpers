@@ -6,6 +6,7 @@ import {
   mutation,
   notEmpty,
   useSubscription,
+  useSubscriptionByItself,
 } from '../../.';
 import {
   listBlogsQuery,
@@ -13,6 +14,8 @@ import {
   CreateBlogMutation,
   CreateBlogMutationVariables,
   postFragment,
+  OnCreatePostSubscription,
+  CreatePostMutationVariables,
 } from 'src/API';
 import { createBlog } from './graphql/mutations';
 import Amplify from 'aws-amplify';
@@ -20,7 +23,7 @@ import Amplify from 'aws-amplify';
 import * as faker from 'faker';
 import { oc } from 'ts-optchain';
 import { listBlogs } from './graphql/custom-queries';
-import { onCreatePost } from './graphql/subscriptions';
+import { onCreatePost, onCreatePostForBlog } from './graphql/subscriptions';
 import { Spinner } from './SpinnerExample';
 
 import config from './aws-exports';
@@ -30,21 +33,51 @@ Amplify.configure(config);
 export const App = () => {
   // useQuery example
   const result = useQuery<listBlogsQuery, listBlogsQueryVariables>(listBlogs);
-
+  const firstBlog = oc(result).data.listBlogs.items([])[0];
   const [showNewPost, setShowNewPost] = React.useState(false);
 
   // subscribe to event whenever post is created (global level)
-  useSubscription<postFragment>({
+  const [item] = useSubscriptionByItself<postFragment>({
     config: {
       key: 'onCreatePost',
       query: onCreatePost,
     },
-    dispatch: () => {
-      setShowNewPost(true);
-    },
   });
 
-  const refreshBlog = () => {
+  const [firstBlogNewPost] = useSubscriptionByItself<
+    postFragment,
+    CreatePostMutationVariables
+  >({
+    config: firstBlog
+      ? {
+          key: 'onCreatePostForBlog',
+          query: onCreatePostForBlog,
+          variables: {
+            input: {
+              postBlogId: firstBlog.id,
+              title: 'blah',
+            },
+          },
+        }
+      : undefined,
+  });
+
+  React.useEffect(() => {
+    if (firstBlogNewPost) {
+      setShowNewPost(true);
+      refreshBlogs();
+    }
+    console.log('firstBlogNewPost', firstBlogNewPost);
+  }, [JSON.stringify(firstBlogNewPost)]);
+
+  React.useEffect(() => {
+    if (item) {
+      setShowNewPost(true);
+      refreshBlogs();
+    }
+  }, [JSON.stringify(item)]);
+
+  const refreshBlogs = () => {
     result.refetch();
   };
 
@@ -52,6 +85,7 @@ export const App = () => {
     if (showNewPost) {
       setTimeout(() => {
         setShowNewPost(false);
+        refreshBlogs();
       }, 3000);
     }
   }, [showNewPost]);
@@ -69,7 +103,7 @@ export const App = () => {
               },
             }
           );
-          refreshBlog();
+          refreshBlogs();
         }}
       >
         Create Random Blog
@@ -81,7 +115,7 @@ export const App = () => {
               .data.listBlogs.items([])
               .filter(notEmpty)
               .map(blog => (
-                <Blog blog={blog} key={blog.id} refreshBlog={refreshBlog} />
+                <Blog blog={blog} key={blog.id} refreshBlog={refreshBlogs} />
               ))}
           </div>
         )}

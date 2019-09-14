@@ -14,6 +14,7 @@ import { createPost, deleteBlog } from './graphql/mutations';
 import { postsForBlog } from './graphql/custom-queries';
 import { Post } from './Post';
 import * as faker from 'faker';
+
 export const Blog: React.FC<{
   blog: blogFragment;
   refreshBlog: () => void;
@@ -54,28 +55,25 @@ export const Blog: React.FC<{
   return (
     <>
       <h1>{blog.name}</h1>
+      <h3>{blog.publishDate}</h3>
       <button onClick={removeBlog}>Delete Blog</button>
 
       <QueryHandler {...results}>
-        {({ data: posts }) => {
-          return (
-            <div>
-              <button onClick={createRandomPost}>Create Random Post</button>
-              {posts.map(post => {
-                return (
-                  <div key={post.id}>
-                    <Post post={post} />
-                  </div>
-                );
-              })}
-              {nextToken && (
-                <>
-                  <button onClick={() => setToken(nextToken)}>Load More</button>
-                </>
-              )}
-            </div>
-          );
-        }}
+        {({ data: posts }) => (
+          <div>
+            <button onClick={createRandomPost}>Create Random Post</button>
+            {posts.map(post => (
+              <div key={post.id}>
+                <Post post={post} />
+              </div>
+            ))}
+            {nextToken && (
+              <>
+                <button onClick={() => setToken(nextToken)}>Load More</button>
+              </>
+            )}
+          </div>
+        )}
       </QueryHandler>
     </>
   );

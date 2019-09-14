@@ -8,34 +8,20 @@ export const onCreateComment = `subscription OnCreateComment($commentPostId: ID)
     post {
       id
       title
-      blog {
-        id
-        name
-      }
       postBlogId
-      comments {
-        nextToken
-      }
     }
     commentPostId
   }
 }
 `;
-export const onUpdateComment = `subscription OnUpdateComment($commentPostId: ID) {
-  onUpdateComment(commentPostId: $commentPostId) {
+export const onUpdateComment = `subscription OnUpdateComment($id: ID, $commentPostId: ID) {
+  onUpdateComment(id: $id, commentPostId: $commentPostId) {
     id
     content
     post {
       id
       title
-      blog {
-        id
-        name
-      }
       postBlogId
-      comments {
-        nextToken
-      }
     }
     commentPostId
   }
@@ -48,16 +34,25 @@ export const onDeleteComment = `subscription OnDeleteComment($commentPostId: ID)
     post {
       id
       title
-      blog {
-        id
-        name
-      }
       postBlogId
-      comments {
-        nextToken
-      }
     }
     commentPostId
+  }
+}
+`;
+export const onCreatePostForBlog = `subscription OnCreatePostForBlog($postBlogId: ID) {
+  onCreatePostForBlog(postBlogId: $postBlogId) {
+    id
+    title
+    blog {
+      id
+      name
+      publishDate
+    }
+    postBlogId
+    comments {
+      nextToken
+    }
   }
 }
 `;
@@ -65,12 +60,8 @@ export const onCreateBlog = `subscription OnCreateBlog {
   onCreateBlog {
     id
     name
+    publishDate
     posts {
-      items {
-        id
-        title
-        postBlogId
-      }
       nextToken
     }
   }
@@ -80,12 +71,8 @@ export const onUpdateBlog = `subscription OnUpdateBlog {
   onUpdateBlog {
     id
     name
+    publishDate
     posts {
-      items {
-        id
-        title
-        postBlogId
-      }
       nextToken
     }
   }
@@ -95,12 +82,8 @@ export const onDeleteBlog = `subscription OnDeleteBlog {
   onDeleteBlog {
     id
     name
+    publishDate
     posts {
-      items {
-        id
-        title
-        postBlogId
-      }
       nextToken
     }
   }
@@ -113,17 +96,10 @@ export const onCreatePost = `subscription OnCreatePost {
     blog {
       id
       name
-      posts {
-        nextToken
-      }
+      publishDate
     }
     postBlogId
     comments {
-      items {
-        id
-        content
-        commentPostId
-      }
       nextToken
     }
   }
@@ -136,17 +112,10 @@ export const onUpdatePost = `subscription OnUpdatePost {
     blog {
       id
       name
-      posts {
-        nextToken
-      }
+      publishDate
     }
     postBlogId
     comments {
-      items {
-        id
-        content
-        commentPostId
-      }
       nextToken
     }
   }
@@ -159,17 +128,10 @@ export const onDeletePost = `subscription OnDeletePost {
     blog {
       id
       name
-      posts {
-        nextToken
-      }
+      publishDate
     }
     postBlogId
     comments {
-      items {
-        id
-        content
-        commentPostId
-      }
       nextToken
     }
   }

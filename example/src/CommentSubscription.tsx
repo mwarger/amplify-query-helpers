@@ -1,17 +1,24 @@
 import * as React from 'react';
-import { mutation, useCrudSubscription } from '../../.';
+import {
+  mutation,
+  useCrudSubscription,
+  useSubscriptionByItself,
+} from '../../.';
 import {
   commentFragment,
   OnCreateCommentSubscriptionVariables,
   DeleteCommentMutation,
   DeleteCommentMutationVariables,
+  updateCommentMutation,
+  updateCommentMutationVariables,
+  onUpdateCommentSubscriptionVariables,
 } from 'src/API';
 import { deleteComment } from './graphql/mutations';
-import {
-  onCreateComment,
-  onUpdateComment,
-  onDeleteComment,
-} from './graphql/subscriptions';
+import { onCreateComment, onDeleteComment } from './graphql/subscriptions';
+import * as faker from 'faker';
+import { onUpdateComment } from './graphql/custom-subscriptions';
+import { updateComment } from './graphql/custom-mutations';
+
 export const CommentSubscription: React.FC<{
   commentList: commentFragment[];
   postId: string;
@@ -30,13 +37,7 @@ export const CommentSubscription: React.FC<{
           commentPostId: postId,
         },
       },
-      updatedConfig: {
-        key: 'onUpdateComment',
-        query: onUpdateComment,
-        variables: {
-          commentPostId: postId,
-        },
-      },
+
       deletedConfig: {
         key: 'onDeleteComment',
         query: onDeleteComment,
@@ -49,24 +50,63 @@ export const CommentSubscription: React.FC<{
   return (
     <ul>
       {list.map(comment => (
-        <li key={comment.id}>
-          {comment.content}{' '}
-          <span>
-            <button
-              onClick={async () => {
-                mutation<DeleteCommentMutation, DeleteCommentMutationVariables>(
-                  deleteComment,
-                  {
-                    input: { id: comment.id },
-                  }
-                );
-              }}
-            >
-              Delete Comment
-            </button>
-          </span>
-        </li>
+        <CommentListItem key={comment.id} {...comment} />
       ))}
     </ul>
+  );
+};
+
+export const CommentListItem: React.FC<commentFragment> = comment => {
+  const [subbedComment] = useSubscriptionByItself<
+    commentFragment,
+    onUpdateCommentSubscriptionVariables
+  >({
+    itemData: comment,
+    config: {
+      key: 'onUpdateComment',
+      query: onUpdateComment,
+      variables: {
+        id: comment.id,
+      },
+    },
+  });
+
+  if (!subbedComment) {
+    return null;
+  }
+
+  const { id, content } = subbedComment;
+  return (
+    <li>
+      {content}{' '}
+      <span>
+        <button
+          onClick={async () => {
+            mutation<DeleteCommentMutation, DeleteCommentMutationVariables>(
+              deleteComment,
+              {
+                input: { id },
+              }
+            );
+          }}
+        >
+          Delete Comment
+        </button>
+      </span>
+      <span>
+        <button
+          onClick={async () => {
+            mutation<updateCommentMutation, updateCommentMutationVariables>(
+              updateComment,
+              {
+                input: { id, content: faker.lorem.sentence() },
+              }
+            );
+          }}
+        >
+          Update Comment
+        </button>
+      </span>
+    </li>
   );
 };
