@@ -47,12 +47,14 @@ export const QueryHandler = <DataType extends {}>({
   error,
   children,
   refetch,
-  overlay = false,
+  overlay = <>Loading...</>,
+  loadingComponent = <>Loading...</>,
 }: {
   overlay?: React.ReactNode;
   data: DataType;
   refetch?: () => void;
   loading: boolean;
+  loadingComponent: React.ReactNode;
   error: { data: DataType; errors: any[] };
   children: ({
     data,
@@ -71,6 +73,8 @@ export const QueryHandler = <DataType extends {}>({
       {loading && overlay}
       {children({ data, refetch })}
     </React.Fragment>
+  ) : loading ? (
+    loadingComponent
   ) : (
     <React.Fragment key={JSON.stringify(data)}>
       {children({ data, refetch })}
