@@ -1,6 +1,6 @@
 {
   "name": "amplify-query-helpers",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "main": "dist/index.js",
   "module": "dist/amplify-query-helpers.esm.js",
   "typings": "dist/index.d.ts",
