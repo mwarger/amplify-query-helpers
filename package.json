@@ -1,6 +1,6 @@
 {
   "name": "amplify-query-helpers",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "main": "dist/index.js",
   "module": "dist/amplify-query-helpers.esm.js",
   "typings": "dist/index.d.ts",
@@ -31,20 +31,20 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",
-    "@types/react": "^16.9.2",
-    "@types/react-dom": "^16.9.0",
+    "@types/react": "^16.9.5",
+    "@types/react-dom": "^16.9.1",
     "@types/zen-observable": "^0.8.0",
-    "husky": "^3.0.5",
+    "husky": "^3.0.8",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.18.2",
     "pretty-quick": "^1.11.1",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "tsdx": "^0.9.0",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "tsdx": "^0.9.3",
     "tslib": "^1.10.0",
-    "typescript": "^3.6.2"
+    "typescript": "^3.7.0-beta"
   },
   "dependencies": {
-    "aws-amplify": "^1.1.36"
+    "aws-amplify": "^1.1.40"
   }
 }
