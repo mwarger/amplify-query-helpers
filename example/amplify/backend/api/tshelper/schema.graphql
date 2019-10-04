@@ -7,7 +7,11 @@ type Blog @model {
 
 type Post
   @model
-  @key(name: "ByBlog", fields: ["postBlogId"], queryField: "postsForBlog") {
+  @key(
+    name: "ByBlog"
+    fields: ["postBlogId", "title"]
+    queryField: "postsForBlog"
+  ) {
   id: ID!
   title: String!
   blog: Blog @connection(name: "BlogPosts")

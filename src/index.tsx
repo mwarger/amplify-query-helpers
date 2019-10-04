@@ -124,7 +124,7 @@ export type AmplifyListType<ListItemType> = {
     __typename: string;
     items: ListItemType[] | null;
     nextToken: UndefinedGQLType<string>;
-  } | null;
+  };
 };
 
 export interface UseQueryListType<ResultType>
@@ -140,7 +140,7 @@ export type UseQueryListTypeWithoutRefetch<ResultType> = Omit<
 
 export const useQueryList = <
   ListItemType,
-  ListQueryType extends AmplifyListType<ListItemType | null>,
+  ListQueryType extends AmplifyListType<ListItemType>,
   ListVariablesType extends {}
 >(
   listKey: string,
@@ -160,7 +160,7 @@ export const useQueryList = <
   );
 
   React.useEffect(() => {
-    setList([]);
+    setList(() => []);
   }, [JSON.stringify(variables)]);
 
   React.useEffect(() => {
@@ -181,7 +181,7 @@ export const useQueryList = <
     if (listData) {
       setNextToken(listData.nextToken);
     }
-  }, [data, listKey]);
+  }, [JSON.stringify(data), listKey]);
 
   return { data: list, loading, error, nextToken, setToken };
 };

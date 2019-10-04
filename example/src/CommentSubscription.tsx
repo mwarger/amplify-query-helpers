@@ -1,9 +1,5 @@
 import * as React from 'react';
-import {
-  mutation,
-  useCrudSubscription,
-  useSubscriptionByItself,
-} from '../../.';
+import { mutation, useCrudSubscription, useSubscription } from '../../.';
 import {
   commentFragment,
   OnCreateCommentSubscriptionVariables,
@@ -57,7 +53,7 @@ export const CommentSubscription: React.FC<{
 };
 
 export const CommentListItem: React.FC<commentFragment> = comment => {
-  const [subbedComment] = useSubscriptionByItself<
+  const [subbedComment] = useSubscription<
     commentFragment,
     onUpdateCommentSubscriptionVariables
   >({
