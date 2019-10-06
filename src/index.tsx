@@ -37,7 +37,7 @@ type TODO = any;
 export interface UseQueryType<ResultType> {
   loading: boolean;
   error: TODO;
-  data: ResultType;
+  data?: ResultType;
   refetch: () => void;
 }
 
@@ -51,10 +51,10 @@ export const QueryHandler = <DataType extends {}>({
   loadingComponent = <>Loading...</>,
 }: {
   overlay?: React.ReactNode;
-  data: DataType;
+  data?: DataType;
   refetch?: () => void;
   loading: boolean;
-  loadingComponent: React.ReactNode;
+  loadingComponent?: React.ReactNode;
   error: { data: DataType; errors: any[] };
   children: ({
     data,
@@ -62,22 +62,31 @@ export const QueryHandler = <DataType extends {}>({
   }: {
     data: DataType;
     refetch?: () => void;
+    error?: any[];
   }) => React.ReactNode;
 }) => {
   if (error) {
     console.log('error', JSON.stringify(error.errors));
+    // if (error.data) {
+    //   return (
+    //     <React.Fragment key={JSON.stringify(error.data)}>
+    //       {children({ data: error.data, refetch, error: error.errors })}
+    //     </React.Fragment>
+    //   );
+    // }
+    return null;
   }
 
   return overlay ? (
     <React.Fragment key={JSON.stringify(data)}>
-      {loading && overlay}
-      {children({ data, refetch })}
+      {loading && <>{overlay}</>}
+      {data && children({ data, refetch })}
     </React.Fragment>
   ) : loading ? (
-    loadingComponent
+    <>{loadingComponent}</>
   ) : (
     <React.Fragment key={JSON.stringify(data)}>
-      {children({ data, refetch })}
+      {data && children({ data, refetch })}
     </React.Fragment>
   );
 };
@@ -88,7 +97,7 @@ export const useQuery = <ResultType extends {}, VariablesType extends {} = {}>(
 ): UseQueryType<ResultType> => {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(false);
-  const [data, setData] = React.useState({} as ResultType);
+  const [data, setData] = React.useState<ResultType>();
 
   const fetchQuery = async (query: string, variables?: VariablesType) => {
     try {
@@ -124,43 +133,40 @@ export type AmplifyListType<ListItemType> = {
     __typename: string;
     items: ListItemType[] | null;
     nextToken: UndefinedGQLType<string>;
-  };
+  } | null;
 };
 
 export interface UseQueryListType<ResultType>
   extends UseQueryType<ResultType[]> {
   nextToken: UndefinedGQLType<string>;
-  setToken: (token: string) => void;
+  setToken: (token: UndefinedGQLType<string>) => void;
 }
-
-export type UseQueryListTypeWithoutRefetch<ResultType> = Omit<
-  UseQueryListType<ResultType>,
-  'refetch'
->;
 
 export const useQueryList = <
   ListItemType,
-  ListQueryType extends AmplifyListType<ListItemType>,
+  ListQueryType extends AmplifyListType<ListItemType | null>,
   ListVariablesType extends {}
 >(
   listKey: string,
   query: string,
   variables: ListVariablesType
-): UseQueryListTypeWithoutRefetch<ListItemType> => {
+): UseQueryListType<ListItemType> => {
   const [token, setToken] = React.useState<UndefinedGQLType<string>>();
   const [nextToken, setNextToken] = React.useState<UndefinedGQLType<string>>();
   const [list, setList] = React.useState<ListItemType[]>([]);
 
-  const { data, loading, error } = useQuery<ListQueryType, ListVariablesType>(
-    query,
-    {
-      ...variables,
-      nextToken: token,
-    }
-  );
+  const { data, loading, error, refetch } = useQuery<
+    ListQueryType,
+    ListVariablesType
+  >(query, {
+    ...variables,
+    nextToken: token,
+  });
 
   React.useEffect(() => {
-    setList(() => []);
+    setList([]);
+    setToken(undefined);
+    setNextToken(undefined);
   }, [JSON.stringify(variables)]);
 
   React.useEffect(() => {
@@ -181,9 +187,9 @@ export const useQueryList = <
     if (listData) {
       setNextToken(listData.nextToken);
     }
-  }, [JSON.stringify(data), listKey]);
+  }, [data, listKey]);
 
-  return { data: list, loading, error, nextToken, setToken };
+  return { data: list, loading, refetch, error, nextToken, setToken };
 };
 
 enum ActionType {

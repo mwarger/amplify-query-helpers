@@ -7,11 +7,11 @@
     "start": "run-p dev mock",
     "dev": "parcel index.html",
     "build": "parcel build index.html",
-    "mock": "amplify-dev mock"
+    "mock": "amplify mock"
   },
   "dependencies": {
     "faker": "^4.1.0",
-    "react-app-polyfill": "^1.0.3",
+    "react-app-polyfill": "^1.0.4",
     "react-loader-spinner": "^3.1.4",
     "react-spinners": "^0.6.1",
     "ts-optchain": "^0.1.8"
@@ -23,8 +23,8 @@
     "scheduler/tracing": "../node_modules/scheduler/tracing-profiling"
   },
   "devDependencies": {
-    "@types/faker": "^4.1.5",
-    "@types/react": "^16.9.3",
+    "@types/faker": "^4.1.6",
+    "@types/react": "^16.9.5",
     "@types/react-dom": "^16.9.1",
     "npm-run-all": "^4.1.5",
     "parcel": "^1.12.3",

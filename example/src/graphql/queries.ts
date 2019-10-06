@@ -88,6 +88,7 @@ export const listComments = `query ListComments(
 `;
 export const postsForBlog = `query PostsForBlog(
   $postBlogId: ID
+  $title: ModelStringKeyConditionInput
   $sortDirection: ModelSortDirection
   $filter: ModelPostFilterInput
   $limit: Int
@@ -95,6 +96,7 @@ export const postsForBlog = `query PostsForBlog(
 ) {
   postsForBlog(
     postBlogId: $postBlogId
+    title: $title
     sortDirection: $sortDirection
     filter: $filter
     limit: $limit
