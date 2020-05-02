@@ -15,7 +15,7 @@
     "dev": "run-p start example"
   },
   "peerDependencies": {
-    "aws-amplify": "^1.1.36",
+    "aws-amplify": "^3.0.8",
     "react": ">=16"
   },
   "husky": {
@@ -45,6 +45,6 @@
     "typescript": "^3.7.0-beta"
   },
   "dependencies": {
-    "aws-amplify": "^1.1.40"
+    "aws-amplify": "^3.0.8"
   }
 }

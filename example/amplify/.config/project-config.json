@@ -1,17 +1,15 @@
 {
-    "projectName": "ts-helper-example",
-    "version": "2.0",
-    "frontend": "javascript",
-    "javascript": {
-        "framework": "none",
-        "config": {
-            "SourceDir": "src",
-            "DistributionDir": "dist",
-            "BuildCommand": "npm.cmd run-script build",
-            "StartCommand": "npm.cmd run-script start"
-        }
-    },
-    "providers": [
-        "awscloudformation"
-    ]
+  "projectName": "ts-helper-example",
+  "version": "3.0",
+  "frontend": "javascript",
+  "javascript": {
+    "framework": "none",
+    "config": {
+      "SourceDir": "src",
+      "DistributionDir": "dist",
+      "BuildCommand": "npm.cmd run-script build",
+      "StartCommand": "npm.cmd run-script start"
+    }
+  },
+  "providers": ["awscloudformation"]
 }
