@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
-import Observable from 'zen-observable';
+import Observable from 'zen-observable-ts';
 
 export type UndefinedGQLType<T> = T | null | undefined;
 
@@ -224,8 +224,11 @@ export const useSubscription = <
     let unsubscribe;
     if (config) {
       const { query, key, variables } = config;
-      const subscription = API.graphql(graphqlOperation(query, variables));
-      if (subscription instanceof Observable) {
+      const result = API.graphql(graphqlOperation(query, variables));
+      if (result instanceof Observable) {
+        const subscription = result as Observable<{
+          value: { data: { [key: string]: ItemType } };
+        }>;
         const sub = subscription.subscribe({
           next: payload => {
             try {
@@ -233,8 +236,6 @@ export const useSubscription = <
                 value: {
                   data: { [key]: item },
                 },
-              }: {
-                value: { data: { [key: string]: ItemType } };
               } = payload;
 
               dispatch ? dispatch({ payload: item }) : update(item);
