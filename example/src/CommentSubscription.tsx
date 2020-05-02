@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { mutation, useCrudSubscription, useSubscription } from '../../.';
+import { mutation, useCrudSubscription, useSubscription } from '../../src';
 import {
   commentFragment,
   OnCreateCommentSubscriptionVariables,

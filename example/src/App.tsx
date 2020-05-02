@@ -6,7 +6,7 @@ import {
   mutation,
   notEmpty,
   useSubscription,
-} from '../../.';
+} from '../../src';
 import {
   listBlogsQuery,
   listBlogsQueryVariables,

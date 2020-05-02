@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { mutation } from '../../.';
+import { mutation } from '../../src';
 import {
   CreateCommentMutation,
   CreateCommentMutationVariables,

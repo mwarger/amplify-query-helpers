@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { QueryHandler, useQueryList } from '../../.';
+import { QueryHandler, useQueryList } from '../../src';
 import {
   commentFragment,
   commentsForPostQuery,

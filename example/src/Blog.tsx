@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { QueryHandler, mutation, useQueryList } from '../../.';
+import { QueryHandler, mutation, useQueryList } from '../../src';
 import {
   blogFragment,
   postFragment,
